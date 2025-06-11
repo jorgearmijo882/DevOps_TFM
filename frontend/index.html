@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <title>Inventario de Productos</title>
   <style>
-    /* … tus estilos … */
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    form { margin-bottom: 2rem; }
+    label { display: inline-block; width: 120px; margin-right: 0.5rem; }
+    input { margin-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
   </style>
 </head>
 <body>
@@ -12,86 +17,78 @@
 
   <form id="product-form">
     <h2>Agregar Producto</h2>
-    <label for="name">Nombre:</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="quantity">Cantidad:</label>
-    <input type="number" id="quantity" name="quantity" min="0" required>
-
-    <label for="price">Precio (USD):</label>
-    <input type="number" id="price" name="price" step="0.01" min="0" required>
-
+    <label>Producto:</label>
+    <input type="text" id="product" required><br>
+    <label>Cantidad:</label>
+    <input type="number" id="quantity" min="0" required><br>
+    <label>Valor (USD):</label>
+    <input type="number" id="value" step="0.01" min="0" required><br>
+    <label>Categoría:</label>
+    <input type="text" id="category" required><br>
+    <label>Fecha Ingreso:</label>
+    <input type="date" id="entryDate" required><br>
     <button type="submit">Guardar Producto</button>
   </form>
 
-  <h2>Lista de Productos</h2>
   <table id="products-table">
     <thead>
       <tr>
         <th>ID</th>
-        <th>Nombre</th>
+        <th>Producto</th>
         <th>Cantidad</th>
-        <th>Precio</th>
+        <th>Valor</th>
+        <th>Categoría</th>
+        <th>Fecha Ingreso</th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 
   <script>
-    // URL fija para evitar confusiones
     const apiBase = 'http://localhost:8080/api/products';
 
-    // Mostrar errores en consola
-    function handleError(err) {
-      console.error(err);
-      alert('Error: ' + err.message);
-    }
-
     async function loadProducts() {
-      try {
-        const resp = await fetch(apiBase);
-        if (!resp.ok) throw new Error(`GET ${apiBase} → ${resp.status}`);
-        const products = await resp.json();
-        const tbody = document.querySelector('#products-table tbody');
-        tbody.innerHTML = '';
-        products.forEach(p => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${p.id}</td>
-            <td>${p.name}</td>
-            <td>${p.quantity}</td>
-            <td>${p.price.toFixed(2)}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      } catch (err) {
-        handleError(err);
-      }
+      const resp = await fetch(apiBase);
+      const list = await resp.json();
+      const tbody = document.querySelector('#products-table tbody');
+      tbody.innerHTML = '';
+      list.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.id}</td>
+          <td>${p.product}</td>
+          <td>${p.quantity}</td>
+          <td>${p.value.toFixed(2)}</td>
+          <td>${p.category}</td>
+          <td>${p.entryDate}</td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     document.getElementById('product-form').addEventListener('submit', async e => {
       e.preventDefault();
       const payload = {
-        name: document.getElementById('name').value,
+        product: document.getElementById('product').value,
         quantity: +document.getElementById('quantity').value,
-        price: +document.getElementById('price').value
+        value: +document.getElementById('value').value,
+        category: document.getElementById('category').value,
+        entryDate: document.getElementById('entryDate').value
       };
-      try {
-        const resp = await fetch(apiBase, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        if (!resp.ok) throw new Error(`POST ${apiBase} → ${resp.status}`);
-        await resp.json(); // consume body
+      const resp = await fetch(apiBase, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (resp.ok) {
         e.target.reset();
         loadProducts();
-      } catch (err) {
-        handleError(err);
+      } else {
+        alert('Error al guardar');
       }
     });
 
-    // Carga inicial
+    // carga inicial
     loadProducts();
   </script>
 </body>

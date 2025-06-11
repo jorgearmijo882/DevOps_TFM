@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "http://localhost")  // permite CORS desde tu frontend
+@CrossOrigin(origins = "http://localhost")
 public class ProductController {
 
     private final ProductRepository repo;
