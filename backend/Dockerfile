@@ -1,5 +1,5 @@
 # Etapa de compilación
-FROM maven:3.8.7-openjdk-17-slim AS build
+FROM maven:3.8.5-openjdk-17-slim AS build
 WORKDIR /app
 
 # Copiamos pom y descargamos dependencias (cache)
