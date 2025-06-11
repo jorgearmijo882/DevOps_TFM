@@ -1,33 +1,36 @@
 package com.example.inventory.model;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "products")
 public class Product {
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String product;          // nombre del producto
+    private String product;
 
     @Column(nullable = false)
-    private Integer quantity;        // cantidad
+    private Integer quantity;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private Double value;            // valor
+    private BigDecimal value;
 
     @Column(nullable = false)
-    private String category;         // categoría
+    private String category;
 
     @Column(name = "entry_date", nullable = false)
-    private LocalDate entryDate;     // fecha de ingreso
+    private LocalDate entryDate;
 
-    public Product() { }
+    public Product() {
+    }
 
-    public Product(String product, Integer quantity, Double value, String category, LocalDate entryDate) {
+    public Product(String product, Integer quantity, BigDecimal value, String category, LocalDate entryDate) {
         this.product = product;
         this.quantity = quantity;
         this.value = value;
@@ -35,23 +38,51 @@ public class Product {
         this.entryDate = entryDate;
     }
 
-    // getters y setters ...
+    public Long getId() {
+        return id;
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getProduct() { return product; }
-    public void setProduct(String product) { this.product = product; }
+    public String getProduct() {
+        return product;
+    }
 
-    public Integer getQuantity() { return quantity; }
-    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+    public void setProduct(String product) {
+        this.product = product;
+    }
 
-    public Double getValue() { return value; }
-    public void setValue(Double value) { this.value = value; }
+    public Integer getQuantity() {
+        return quantity;
+    }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
-    public LocalDate getEntryDate() { return entryDate; }
-    public void setEntryDate(LocalDate entryDate) { this.entryDate = entryDate; }
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public void setValue(BigDecimal value) {
+        this.value = value;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public LocalDate getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(LocalDate entryDate) {
+        this.entryDate = entryDate;
+    }
 }
