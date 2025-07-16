@@ -1,0 +1,21 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dockerHubRepo: 'jorgearmijo882/bdd-app'
+  imageTag: 'latest'
+
+steps:
+- task: Docker@2
+  inputs:
+    containerRegistry: 'docker-hub-connection'
+    repository: '$(dockerHubRepo)'
+    command: 'buildAndPush'
+    Dockerfile: 'docker/bdd/Dockerfile'
+    tags: |
+      $(imageTag)

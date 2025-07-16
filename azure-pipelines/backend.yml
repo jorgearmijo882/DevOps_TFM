@@ -1,0 +1,26 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dockerHubRepo: 'jorgearmijo882/backend-app'
+  imageTag: 'latest'
+
+steps:
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'docker/backend/pom.xml'
+    goals: 'clean package -DskipTests'
+
+- task: Docker@2
+  inputs:
+    containerRegistry: 'docker-hub-connection'
+    repository: '$(dockerHubRepo)'
+    command: 'buildAndPush'
+    Dockerfile: 'docker/backend/Dockerfile'
+    tags: |
+      $(imageTag)
