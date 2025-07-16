@@ -10,7 +10,7 @@ packer {
 source "virtualbox-iso" "ubuntu" {
   iso_url              = "https://releases.ubuntu.com/22.04/ubuntu-22.04-live-server-amd64.iso"
   iso_checksum         = "sha256:93bdab204067321ff131f560879db46bee3b994bf24836bb78538640f689e58f"
-  vm_name              = "ubuntu-openjdk17"
+  vm_name              = "ubuntu-backend"
   guest_os_type        = "Ubuntu_64"
   ssh_username         = "packer"
   ssh_password         = "packer"
@@ -18,12 +18,22 @@ source "virtualbox-iso" "ubuntu" {
   shutdown_command     = "echo 'packer' | sudo -S shutdown -P now"
   disk_size            = 10000
   hard_drive_interface = "sata"
+  output_directory     = "output"
 }
 
 build {
   sources = ["source.virtualbox-iso.ubuntu"]
 
+  provisioner "file" {
+    source      = "./provisioners/backend"
+    destination = "/home/packer/backend"
+  }
+
   provisioner "shell" {
-    script = "./provisioners/install-openjdk.sh"
+    script = "./provisioners/install-java-maven.sh"
+  }
+
+  provisioner "shell" {
+    script = "./provisioners/build-backend.sh"
   }
 }

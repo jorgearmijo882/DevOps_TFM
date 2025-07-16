@@ -1,9 +1,13 @@
 #!/bin/bash
-echo "Actualizando paquetes..."
+echo "Instalando OpenJDK 17 y Maven..."
+
 sudo apt update
+sudo apt install -y openjdk-17-jdk wget unzip
 
-echo "Instalando OpenJDK 17..."
-sudo apt install -y openjdk-17-jdk
+wget https://downloads.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.zip
+unzip apache-maven-3.8.5-bin.zip
+sudo mv apache-maven-3.8.5 /opt/maven
+sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
 
-echo "Verificando instalación..."
 java -version
+mvn -version
