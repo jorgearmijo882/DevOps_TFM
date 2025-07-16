@@ -1,4 +1,4 @@
-# Inventory DevSecOps Project
+# TFM Jorge Armijo - UNIR - 2025
 
 ## Introducción
 Este proyecto proporciona una solución integral basada en el enfoque DevSecOps, diseñada para automatizar la gestión segura de infraestructuras y aplicaciones multicapa. Es especialmente útil para equipos que buscan implementar prácticas modernas de desarrollo y operaciones utilizando herramientas open-source.
