@@ -9,9 +9,9 @@ terraform {
 
 provider "virtualbox" {}
 
-resource "virtualbox_vm" "frontend" {
+resource "virtualbox_vm" "bdd" {
   name      = var.vm_name
-  image     = "${path.module}/../packer/output/ubuntu-frontend.vdi"
+  image     = "${path.module}/../../packer/bdd/output/bdd-vm.vdi"
   cpus      = 1
   memory    = 1024
 
@@ -20,8 +20,8 @@ resource "virtualbox_vm" "frontend" {
     nat_dns_proxy  = true
     nat_redirects = [
       {
-        host_port      = 8080
-        guest_port     = 80
+        host_port      = 5432
+        guest_port     = 5432
         protocol       = "tcp"
       }
     ]
