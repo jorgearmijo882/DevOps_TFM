@@ -3,14 +3,14 @@ FROM maven:3.8.5-openjdk-17-slim AS build
 WORKDIR /app
 
 # Copiamos pom y descargamos dependencias (cache)
-COPY backend/pom.xml .
+COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
 # Copiamos el código y construimos el jar
-COPY backend/src ./src
+COPY src ./src
 RUN mvn clean package -DskipTests -B
 
-# Etapa de runtime
+# Etapa de ejecución
 FROM openjdk:17-jdk-slim
 WORKDIR /app
 
